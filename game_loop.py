@@ -26,7 +26,8 @@ def update():
     sprite_rect = grungus.sprite.get_rect()
     mouse_down = None
     frames = 0
-
+    shot_time = 0
+    
 
 
 
@@ -34,6 +35,7 @@ def update():
         # poll for events
         # pygame.QUIT event means the user clicked X to close your window
         frames += 1
+        curr_time = pygame.time.get_ticks()
 
         for event in pygame.event.get():
             if event.type == pygame.QUIT:
@@ -55,12 +57,13 @@ def update():
 
 
         mouse_pos = pygame.mouse.get_pos()
-        if mouse_down and can_shoot():
-            bullet_list.append(bullet(mouse_pos))
+        if mouse_down and can_shoot() and (curr_time - shot_time >= fire_delay):
+            bullet_list.append(bullet(grungus.position))
+            shot_time = pygame.time.get_ticks()
             
 
         for bullets in bullet_list:
-            bullets.position = (bullets.position[0] + 1, bullets.position[1])
+            bullets.position = (bullets.position[0] + bullets.speed, bullets.position[1])
             screen.blit(bullets.sprite, bullets.position)
 
 

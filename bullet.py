@@ -4,12 +4,14 @@ import pygame
 
 
 class bullet:
+    speed = 5
+    
+
     def __init__(self) -> None:
-        self.position = None
-        self.x = None
-        self.y = None
         self.sprite = pygame.image.load("images/bullet_bill.jpg").convert()
         self.sprite = pygame.transform.scale(self.sprite, (200, 100))
+
+        
 
     def __init__(self, position) -> None:
         self.position = position
@@ -21,3 +23,4 @@ class bullet:
     
         
 bullet_list = []
+fire_delay = 300

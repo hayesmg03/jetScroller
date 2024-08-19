@@ -1,7 +1,7 @@
 import pygame
 
 class player:
-    speed = 5
+    speed = 8
     sprite = None
     height = None
     width = None

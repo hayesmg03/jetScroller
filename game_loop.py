@@ -2,6 +2,8 @@ import os
 import pygame as pg
 from bullet import *
 from player import *
+from enemy import *
+
 
 SCREEN_WIDTH = 1280
 SCREEN_HEIGHT = 720
@@ -18,13 +20,14 @@ def load_image(name, scale=1):
     size = (size[0] * scale, size[1] * scale)
     image = pg.transform.scale(image, size)
 
-    image = image.convert()
+    image = image.convert_alpha()
     return image, image.get_rect()
 
 
 
 def update():
     screen = pygame.display.set_mode((SCREEN_WIDTH, SCREEN_HEIGHT))
+    pg.display.set_caption("Jet")
     clock = pygame.time.Clock()
     running = True
     grungus = player()
@@ -35,6 +38,7 @@ def update():
     #frames is not used
     frames = 0
     shot_time = 0
+    spawn_time = 0
     
 
 
@@ -57,7 +61,7 @@ def update():
                 mouse_down = False 
 
         # fill the screen with a color to wipe away anything from last frame
-        screen.fill("white")
+        screen.fill("blue")
 
         # RENDER YOUR GAME HERE
         screen.blit(grungus.sprite, sprite_rect)
@@ -67,35 +71,47 @@ def update():
 
         mouse_pos = pygame.mouse.get_pos()
 
-        
+        # if a mouse button is held down and a certain amount of time has passed, add a new bullet object to bullet_list
         if mouse_down and (curr_time - shot_time >= fire_delay):
             bullet_list.append(bullet(grungus.position))
+            bullet_list[-1].sprite, bullet_list[-1].sprite_rect = load_image("bullet_bill.jpg", .2)
             shot_time = pygame.time.get_ticks()
             
-
+        # for each bullet in bullet_list set its position to player's and blit. if the bullet reaches the edge of the screen, remove it from bullet_list
         for bullets in bullet_list:
             bullets.position = (bullets.position[0] + bullets.speed, bullets.position[1])
-            screen.blit(bullets.sprite, (bullets.position[0] + (grungus.width), bullets.position[1] + (grungus.height / 3)))
+            screen.blit(bullets.sprite, (bullets.position[0] + (grungus.width - 20), bullets.position[1] + (grungus.height / 3)))
             if bullets.position[0] >= SCREEN_WIDTH:
                 bullet_list.remove(bullets)
 
+        if curr_time - spawn_time >= spawn_delay:
+            enemy_list.append(enemy())
+            enemy_list[-1].sprite, enemy_list[-1].sprite_rect = load_image("green.png", 1.5)
+            enemy_list[-1].sprite_rect.x, enemy_list[-1].sprite_rect.y = (1280, random.randint(0, 720))
+            spawn_time = pygame.time.get_ticks()
+
+        for enemies in enemy_list:
+            enemies.sprite_rect.x = enemies.sprite_rect.x - enemies.speed
+            screen.blit(enemies.sprite, enemies.sprite_rect)
+            if enemies.sprite_rect.x < -30:
+                enemy_list.remove(enemies)
 
 
         #get_pressed(): returns boolean sequence representing state of currently pressed buttons as array
         keys = pygame.key.get_pressed()
-        #checks for W, A, S, and D in keys array, increment or decrements the sprite_rect x or y. does nothing if edges of scrren are reached.
+        #checks for W, A, S, and D in keys array, increment or decrements the sprite_rect x or y. does nothing if edges of screen are reached.
         if keys[pygame.K_w] and sprite_rect.y > 0:
             sprite_rect.y -= grungus.speed * delta_time
-        if keys[pygame.K_s]:
+        if keys[pygame.K_s] and sprite_rect.y < SCREEN_HEIGHT - grungus.height:
             sprite_rect.y += grungus.speed * delta_time
-        if keys[pygame.K_a]:
+        if keys[pygame.K_a] and sprite_rect.x >= 0:
             sprite_rect.x -= grungus.speed * delta_time
-        if keys[pygame.K_d]:
+        if keys[pygame.K_d] and sprite_rect.x < SCREEN_WIDTH - grungus.width:
             sprite_rect.x += grungus.speed * delta_time
 
         grungus.position = pygame.Vector2(sprite_rect.x, sprite_rect.y)
 
-        # print(grungus.position)
+
         print(bullet_list)
 
         

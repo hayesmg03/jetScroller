@@ -1,10 +1,11 @@
 import pygame
 
 class player:
+    speed = 5
+    sprite = None
+    height = None
+    width = None
+    position = pygame.Vector2(0,0)
+
     def __init__(self) -> None:
-        self.sprite = pygame.image.load("images/tank_main_character.png").convert()
-        self.height = None
-        self.width = None
-        self.position = None
-        self.x = None
-        self.y = None
+        self.sprite = None

@@ -4,7 +4,7 @@ import pygame
 
 
 class bullet:
-    speed = 5
+    speed = 20
     
 
     def __init__(self) -> None:
@@ -18,9 +18,17 @@ class bullet:
         self.x = position[0]
         self.y = position[1]
         self.sprite = pygame.image.load("images/bullet_bill.jpg").convert()
-        self.sprite = pygame.transform.scale(self.sprite, (200, 100))
+        self.sprite = pygame.transform.scale(self.sprite, (100, 50))
     
     
         
 bullet_list = []
 fire_delay = 300
+
+def can_shoot():
+    if len(bullet_list) < 3:
+        return True
+    return False
+
+
+

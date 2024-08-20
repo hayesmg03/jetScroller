@@ -14,10 +14,7 @@ class bullet:
 
         
 
-    def __init__(self, position) -> None:
-        self.position = position
-        self.x = position[0]
-        self.y = position[1]
+
     
     
         

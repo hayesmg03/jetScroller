@@ -1,4 +1,3 @@
-import random
 import pygame as pg
 
 class enemy:
@@ -11,5 +10,5 @@ class enemy:
         pass
 
 enemy_list = []
-spawn_delay = 400
+spawn_delay = 700
 spawn_time = 0

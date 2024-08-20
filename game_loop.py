@@ -75,14 +75,14 @@ def update():
         # if a mouse button is held down and a certain amount of time has passed, add a new bullet object to bullet_list
         if mouse_down and (curr_time - shot_time >= fire_delay):
             bullet_list.append(bullet())
-            bullet_list[-1].sprite, bullet_list[-1].sprite_rect = load_image("bullet_bill.jpg", .2)
+            bullet_list[-1].sprite, bullet_list[-1].sprite_rect = load_image("missile.png", 1.5)
             bullet_list[-1].sprite_rect.x, bullet_list[-1].sprite_rect.y = sprite_rect.x, sprite_rect.y
             shot_time = pygame.time.get_ticks()
             
         # for each bullet in bullet_list set its position to player's and blit. if the bullet reaches the edge of the screen, remove it from bullet_list
         for bullets in bullet_list:
             bullets.sprite_rect.x = (bullets.sprite_rect.x + bullets.speed)
-            screen.blit(bullets.sprite, (bullets.sprite_rect.x + (grungus.width - 20), bullets.sprite_rect.y + (grungus.height / 3)))
+            screen.blit(bullets.sprite, (bullets.sprite_rect.x + (grungus.width - 40), bullets.sprite_rect.y + 20))
             if bullets.sprite_rect.x >= SCREEN_WIDTH:
                 bullet_list.remove(bullets)
             
@@ -91,6 +91,7 @@ def update():
             enemy_list.append(enemy())
             enemy_list[-1].sprite, enemy_list[-1].sprite_rect = load_image("druid.png", 2)
             enemy_list[-1].sprite_rect.x, enemy_list[-1].sprite_rect.y = (1280, random.randint(0, SCREEN_HEIGHT - 64))
+            enemy_list[-1].sprite_rect.inflate(-50,-50)
             spawn_time = pygame.time.get_ticks()
 
         for enemies in enemy_list:

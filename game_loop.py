@@ -91,7 +91,6 @@ def update():
             enemy_list.append(enemy())
             enemy_list[-1].sprite, enemy_list[-1].sprite_rect = load_image("druid.png", 2)
             enemy_list[-1].sprite_rect.x, enemy_list[-1].sprite_rect.y = (1280, random.randint(0, SCREEN_HEIGHT - 64))
-            enemy_list[-1].sprite_rect.inflate(-50,-50)
             spawn_time = pygame.time.get_ticks()
 
         for enemies in enemy_list:
@@ -102,6 +101,7 @@ def update():
             for bullets in bullet_list:
                 if enemies.sprite_rect.colliderect(bullets.sprite_rect):
                     enemy_list.remove(enemies)
+                    bullet_list.remove(bullets)
 
 
         #get_pressed(): returns boolean sequence representing state of currently pressed buttons as array
